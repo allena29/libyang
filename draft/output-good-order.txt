@@ -1,0 +1,8 @@
+DEBUG: Parsing b.yang
+libyang [2]: Searching for "c" in "/home/adam/libyang/draft/models2". (line 0)
+libyang [2]: Searching for "c" in "/home/adam/libyang/draft". (line 0)
+libyang [2]: Loading schema from "/home/adam/libyang/draft/models2/c.yang" file. (line 0)
+libyang [2]: Searching for "d" in "/home/adam/libyang/draft/models2". (line 0)
+libyang [2]: Searching for "d" in "/home/adam/libyang/draft". (line 0)
+libyang [2]: Loading schema from "/home/adam/libyang/draft/models2/d.yang" file. (line 0)
+SUCCESS: Loaded b

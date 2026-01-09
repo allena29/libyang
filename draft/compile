@@ -1,0 +1,3 @@
+gcc -g -o yang_ls yang_ls.c \
+    -I/usr/local/future/include -L/usr/local/future/lib \
+    -Wl,-rpath,/usr/local/future/lib -lyang
