@@ -1253,8 +1253,35 @@ lysp_load_submodules(struct lysp_ctx *pctx, struct lysp_module *pmod, struct ly_
              * submodule's include into main module, where it is missing */
             inc = &pmod->includes[u];
 
-            assert(!inc->submodule);
-            inc->submodule = submod;
+
+   /* Option 1 - explain why we didn't want to carry on rather than assert to make it friendlier? 
+      I'm oscilliating between the models are valid and the models are not valid which makes writing
+      the message her 
+   */
+    if (inc->submodule) {
+        LOGERR(PARSER_CTX(pctx), LY_EINVAL, 
+               "Invalid YANG model structure: submodule \"%s\" in module \"%s\" "
+               "is included multiple times or has a redundant dependency path. "
+               "Check for redundant 'include' statements in sibling submodules.",
+               inc->name, pmod->mod->name);
+				abort();
+    }
+ 
+    /* Option 2 - warn or have a flag to decide if it's allowed */
+
+            if (inc->submodule) {
+                /* VENDOR WORKAROUND: Handle redundant include paths in 1.0 models */
+                LOGWRN(PARSER_CTX(pctx), "Detected redundant include of \"%s\" in module \"%s\". "
+                       "Skipping assignment to avoid crash.", inc->name, pmod->mod->name);
+                if (inc->submodule != submod) {
+                    LOGWRN(PARSER_CTX(pctx), "Submodule pointers differ for \"%s\" during redundant include!", 
+                           inc->name);
+                }
+            } else {
+                inc->submodule = submod;
+            }			
+ 
+    /* Option 3 something else?  */
 
             if (!submod_included) {
                 /* the submodule include is not present in YANG 1.0 main module - add it there */
